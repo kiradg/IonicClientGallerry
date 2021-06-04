@@ -8,13 +8,17 @@ import { ProductsDetailPageRoutingModule } from './products-detail-routing.modul
 
 import { ProductsDetailPage } from './products-detail.page';
 
+import { MultiFileUploadComponent } from '../../components/multi-file-upload/multi-file-upload.component';
+import { FileUploadModule } from 'ng2-file-upload';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductsDetailPageRoutingModule
+    ProductsDetailPageRoutingModule,
+    FileUploadModule,
   ],
-  declarations: [ProductsDetailPage]
+  declarations: [ProductsDetailPage, MultiFileUploadComponent]
 })
 export class ProductsDetailPageModule {}

@@ -11,10 +11,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
-import { Camera } from '@ionic-native/camera/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,9 +25,6 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Camera,
-    FilePath,
-    FileChooser,
   ],
   bootstrap: [AppComponent]
 })

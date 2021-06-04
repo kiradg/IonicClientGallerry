@@ -1,0 +1,26 @@
+<input type="file" accept="image/*" ng2FileSelect [uploader]="uploader" #fileInput multiple hidden />
+
+<ion-list *ngIf="uploader?.queue?.length">
+    <ion-list-header lines="full" color="primary">
+        <ion-label>
+            <h3>Upload queue length: {{ uploader?.queue?.length }}</h3>
+        </ion-label>
+        <ion-note>Primary Note</ion-note>
+    </ion-list-header>
+    <ion-item *ngFor="let item of uploader.queue">
+        <ion-label class="ion-text-wrap">
+            <ion-text color="secondary">
+                {{ item?.file?.name }} - <strong>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</strong>
+            </ion-text>
+            <ion-text color="danger" *ngIf="item.isError">
+                - Upload error
+            </ion-text>
+            <ion-progress-bar value="{{item.progress/100}}"></ion-progress-bar>
+        </ion-label>
+        <ion-spinner name="crescent" *ngIf="item.isUploading"></ion-spinner>
+        <ion-icon name="checkmark-circle" slot="end" *ngIf="item.isSuccess" color="success"></ion-icon>
+        <ion-button slot="end" *ngIf="item.isError" color="medium" (click)="item.upload()">
+            <ion-icon name="reload"></ion-icon>
+        </ion-button>
+    </ion-item>
+</ion-list>

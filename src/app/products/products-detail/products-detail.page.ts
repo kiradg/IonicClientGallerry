@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Products } from '../../models/products';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
@@ -6,6 +6,7 @@ import { ApiProductService } from '../../services/api-products.service';
 import { ApiGalleryService } from '../../services/api-gallery.service';
 import { PictureService } from '../../services/picture.service';
 import { ToastController } from '@ionic/angular';
+import { MultiFileUploadComponent } from '../../components/multi-file-upload/multi-file-upload.component';
 
 @Component({
   selector: 'app-products-detail',
@@ -14,7 +15,8 @@ import { ToastController } from '@ionic/angular';
 })
 
 export class ProductsDetailPage implements OnInit {
-  
+
+  @ViewChild(MultiFileUploadComponent) fileField: MultiFileUploadComponent;
   productid: number;
   productdata: Products;
   galleryData: any;
@@ -27,9 +29,9 @@ export class ProductsDetailPage implements OnInit {
     public apiProductService: ApiProductService,
     public apiGalleryService: ApiGalleryService,
     public pictureService: PictureService,
-    ) {
-      this.productdata = new Products();
-      this.galleryData = [];
+  ) {
+    this.productdata = new Products();
+    this.galleryData = [];
   }
 
   ngOnInit() {
@@ -45,12 +47,10 @@ export class ProductsDetailPage implements OnInit {
       this.galleryData = response;
     })
   }
-  
-  savePicture(picture){
-    this.apiGalleryService.createItem(this.productid, picture).subscribe((response) => {
-      this.galleryData.push(response);
-      this.presentToast('Save image in server');
-    });
+
+  receiveMessage($event) {
+    let response = $event
+    this.galleryData.push(response);
   }
 
   public async addPhotoToGallery() {
@@ -60,18 +60,14 @@ export class ProductsDetailPage implements OnInit {
         text: 'Load from Library',
         icon: 'folder',
         handler: () => {
-          this.pictureService.addImageFile().then(response => {
-            this.savePicture(response);
-          });
+          this.fileField.addFiles();
         }
       },
       {
         text: 'Use Camera',
         icon: 'camera',
         handler: () => {
-          this.pictureService.addImageCamera().then(response => {
-            this.savePicture(response);
-          });
+          this.fileField.addImageCamera();
         }
       },
       {
@@ -84,7 +80,7 @@ export class ProductsDetailPage implements OnInit {
     await actionSheet.present();
   }
 
-  public async deletePhotoToGallery(idGallery,position) {
+  public async deletePhotoToGallery(idGallery, position) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
@@ -101,7 +97,7 @@ export class ProductsDetailPage implements OnInit {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
-        handler: () => {}
+        handler: () => { }
       }]
     });
     await actionSheet.present();

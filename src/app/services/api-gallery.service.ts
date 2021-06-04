@@ -38,15 +38,6 @@ export class ApiGalleryService {
       'Something bad happened; please try again later.');
   };
 
-  createItem(idProduct,item): Observable<Gallery> {
-    return this.http
-      .post<Gallery>(this.base_path + '/' + this.product_path + '/' + idProduct + '/' + this.gallery_path, JSON.stringify(item), this.httpOptions)
-      .pipe(
-        retry(2),
-        catchError(this.handleError)
-      )
-  }
-
   // Get products data
   getList(idProduct): Observable<Gallery> {
     return this.http
