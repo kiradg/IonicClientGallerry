@@ -2,19 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { Gallery } from '../models/gallery';
+import { Products } from '../models/products';
+import { environment } from '../../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiGalleryService {
-
-  base_path = 'http://192.168.100.94/api';
-  product_path = 'products';
-  gallery_path = 'gallery';
+export class ProductService {
 
   constructor(private http: HttpClient) { }
 
+  // Http Options
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -38,19 +36,50 @@ export class ApiGalleryService {
       'Something bad happened; please try again later.');
   };
 
-  // Get products data
-  getList(idProduct): Observable<Gallery> {
+  // Create a new product
+  create(product): Observable<Products> {
     return this.http
-      .get<Gallery>(this.base_path + '/' + this.product_path + '/' + idProduct + '/' + this.gallery_path)
+      .post<Products>(`${environment.api_url}/products`, JSON.stringify(product), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
       )
   }
 
-  deleteItem(idProduct,idGallery) {
+  // Get single products data by ID
+  get(idProduct): Observable<Products> {
     return this.http
-      .delete<Gallery>(this.base_path + '/' + this.product_path + '/' + idProduct + '/' + this.gallery_path + '/'+ idGallery, this.httpOptions)
+      .get<Products>(`${environment.api_url}/products/${idProduct}`)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      )
+  }
+
+  // Get products data
+  list(): Observable<Products> {
+    return this.http
+      .get<Products>(`${environment.api_url}/products`)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      )
+  }
+
+  // Update product by ID
+  update(idProduct, product): Observable<Products> {
+    return this.http
+      .put<Products>(`${environment.api_url}/products/${idProduct}`, JSON.stringify(product), this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      )
+  }
+
+  // Delete product by ID
+  delete(idProduct) {
+    return this.http
+      .delete<Products>(`${environment.api_url}/products/${idProduct}`, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)

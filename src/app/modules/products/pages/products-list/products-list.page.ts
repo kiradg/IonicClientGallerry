@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiProductService } from '../../services/api-products.service';
+import { ProductService } from '../../../../core/services/products.service';
 
 @Component({
   selector: 'app-products-list',
@@ -9,7 +9,7 @@ import { ApiProductService } from '../../services/api-products.service';
 export class ProductsListPage implements OnInit {
   productsData: any;
 
-  constructor(public apiProductService: ApiProductService) {
+  constructor(public productService: ProductService) {
     this.productsData = [];
   }
 
@@ -21,14 +21,14 @@ export class ProductsListPage implements OnInit {
   }
 
   getAllProducts() {
-    this.apiProductService.getList().subscribe(response => {
+    this.productService.list().subscribe(response => {
       this.productsData = response;
     })
   }
 
 
   delete(item) {
-    this.apiProductService.deleteItem(item.id).subscribe(Response => {
+    this.productService.delete(item.id).subscribe(Response => {
       this.getAllProducts();
     });
   }

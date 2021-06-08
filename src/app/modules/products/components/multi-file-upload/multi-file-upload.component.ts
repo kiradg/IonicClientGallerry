@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import { environment } from '../../../../../environments/environment'
 const { Camera, } = Plugins;
 
 @Component({
@@ -9,11 +10,6 @@ const { Camera, } = Plugins;
   styleUrls: ['./multi-file-upload.component.scss']
 })
 export class MultiFileUploadComponent {
-
-  base_path = 'http://192.168.100.94/api';
-  product_path = 'products';
-  gallery_path = 'gallery';
-
 
   @ViewChild('fileInput') fileInput: ElementRef;
   @Input() productid: number;
@@ -24,7 +20,7 @@ export class MultiFileUploadComponent {
 
   ngOnInit() {
     this.uploader = new FileUploader({
-      url: this.base_path + '/' + this.product_path + '/' + this.productid + '/' + this.gallery_path,
+      url: `${environment.api_url}/products/${this.productid}/gallery`,
       itemAlias: "image",
       removeAfterUpload: false,
       autoUpload: true

@@ -1,8 +1,7 @@
 {
   "name": "IonicClient",
   "integrations": {
-    "capacitor": {},
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }

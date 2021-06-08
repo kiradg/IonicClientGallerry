@@ -9,19 +9,19 @@ const routes: Routes = [
   },
   {
     path: 'products-create',
-    loadChildren: () => import('./products/products-create/products-create.module').then( m => m.ProductsCreatePageModule)
+    loadChildren: () => import('./modules/products/pages/products-create/products-create.module').then( m => m.ProductsCreatePageModule)
   },
   {
     path: 'products',
-    loadChildren: () => import('./products/products-list/products-list.module').then( m => m.ProductsListPageModule)
+    loadChildren: () => import('./modules/products/pages/products-list/products-list.module').then( m => m.ProductsListPageModule)
   },
   {
     path: 'products-edit/:id',
-    loadChildren: () => import('./products/products-edit/products-edit.module').then(m => m.ProductsEditPageModule)
+    loadChildren: () => import('./modules/products/pages/products-edit/products-edit.module').then(m => m.ProductsEditPageModule)
   },
   {
     path: 'products/:id',
-    loadChildren: () => import('./products/products-detail/products-detail.module').then( m => m.ProductsDetailPageModule)
+    loadChildren: () => import('./modules/products/pages/products-detail/products-detail.module').then( m => m.ProductsDetailPageModule)
   },
 ];
 

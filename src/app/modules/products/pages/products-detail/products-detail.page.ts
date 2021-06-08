@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Products } from '../../models/products';
+import { Products } from '../../../../core/models/products';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import { ApiProductService } from '../../services/api-products.service';
-import { ApiGalleryService } from '../../services/api-gallery.service';
-import { PictureService } from '../../services/picture.service';
+import { ProductService } from '../../../../core/services/products.service';
+import { GalleryService } from '../../../../core/services/gallery.service';
 import { ToastController } from '@ionic/angular';
 import { MultiFileUploadComponent } from '../../components/multi-file-upload/multi-file-upload.component';
 
@@ -26,9 +25,8 @@ export class ProductsDetailPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public toastController: ToastController,
     public router: Router,
-    public apiProductService: ApiProductService,
-    public apiGalleryService: ApiGalleryService,
-    public pictureService: PictureService,
+    public productService: ProductService,
+    public galleryService: GalleryService,
   ) {
     this.productdata = new Products();
     this.galleryData = [];
@@ -36,14 +34,14 @@ export class ProductsDetailPage implements OnInit {
 
   ngOnInit() {
     this.productid = this.activatedRoute.snapshot.params["id"];
-    this.apiProductService.getItem(this.productid).subscribe(response => {
+    this.productService.get(this.productid).subscribe(response => {
       this.productdata = response;
       this.getAllPictures();
     })
   }
 
   getAllPictures() {
-    this.apiGalleryService.getList(this.productid).subscribe(response => {
+    this.galleryService.list(this.productid).subscribe(response => {
       this.galleryData = response;
     })
   }
@@ -88,7 +86,7 @@ export class ProductsDetailPage implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.apiGalleryService.deleteItem(this.productid, idGallery).subscribe((response) => {
+          this.galleryService.delete(this.productid, idGallery).subscribe((response) => {
             this.galleryData.splice(position, 1);
             this.presentToast('Delete image in server');
           });
